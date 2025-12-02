@@ -10,13 +10,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <!-- Styling -->
     <style>
         body {
             background-color: #0d1117;
             color: #e6edf3;
             font-family: "Segoe UI", system-ui, sans-serif;
-            line-height: 1.6;
         }
         h1, h2, h3 {
             color: #58a6ff;
@@ -37,34 +35,20 @@
             border-radius: 8px;
             margin-right: 8px;
         }
-        .btn-custom:hover {
-            background-color: #2ea043;
-        }
-        hr {
-            border-color: #30363d;
-        }
-        img {
-            border-radius: 10px;
-        }
-        .footer {
-            text-align: center;
-            padding: 40px;
-            color: #8b949e;
-        }
-        iframe {
-            border: solid 1px #30363d;
-            border-radius: 10px;
-        }
+        .btn-custom:hover { background-color: #2ea043; }
+        hr { border-color: #30363d; }
+        img { border-radius: 10px; margin-top: 12px; }
+        iframe { border-radius: 10px; border: solid 1px #30363d; }
+        .footer { text-align: center; padding: 40px; color: #8b949e; }
     </style>
 </head>
 
 <body>
 
-    <!-- HERO SECTION -->
+    <!-- HERO -->
     <div class="hero container">
         <h1>Object Detection & Tracking System in Autonomous Driving</h1>
         <p class="mt-3 fs-5">Computer Vision Final Project</p>
-
         <p class="mt-4">
             <a href="poster.pdf" class="btn-custom"><i class="fa-solid fa-file-pdf"></i> Download Poster</a>
             <a href="https://github.com/YOUR_USERNAME/YOUR_REPO" class="btn-custom"><i class="fa-brands fa-github"></i> View Code</a>
@@ -77,10 +61,13 @@
     <div class="container py-5">
         <h2>Abstract</h2>
         <p>
-            Object detection and tracking are essential perception tasks in autonomous driving, where the vehicle must recognize surrounding agents and maintain consistent identities over time. While many modern detectors—such as YOLO, RetinaNet, Faster R-CNN, and Mask R-CNN—are benchmarked extensively on static datasets, their influence on multi-object tracking performance is far less explored. This project investigates this gap by conducting a two-stage experimental study: (1) four detectors are fine-tuned on the KITTI Object Detection dataset, and (2) the same detectors are evaluated on the KITTI Tracking dataset under both pretrained and fine-tuned configurations.
+            Object detection and tracking are essential perception tasks in autonomous driving, where the vehicle must recognize surrounding agents and maintain consistent identities over time. While many modern detectors—such as YOLO, RetinaNet, Faster R-CNN, and Mask R-CNN—are benchmarked extensively on static datasets, their influence on multi-object tracking performance is far less explored. 
         </p>
         <p>
-            We further integrate two state-of-the-art tracking algorithms, DeepSORT and ByteTrack, to measure how detection quality impacts identity consistency, fragmentation, switching, and stability. Our findings show that stronger fine-tuned detectors significantly improve tracking performance, reducing ID switches and producing smoother trajectories. Detection accuracy was found to be a primary factor influencing tracking robustness. The results support the hypothesis that “better tracking starts with better detection,” and demonstrate how model choice directly affects autonomous driving perception pipelines.
+            This project investigates this gap by fine-tuning four detectors on the KITTI Object Detection Dataset and evaluating them on the KITTI Tracking dataset under both pretrained and fine-tuned settings. Two tracking algorithms, DeepSORT and ByteTrack, are integrated to quantify how detection quality affects identity consistency and trajectory stability. 
+        </p>
+        <p>
+            The results clearly show that stronger detectors yield more reliable tracking, fewer ID switches, and smoother trajectories—validating the hypothesis that “better tracking begins with better detection.”
         </p>
     </div>
 
@@ -90,15 +77,39 @@
     <div class="container py-5">
         <h2>Introduction</h2>
         <p>
-            Autonomous driving systems rely heavily on accurate perception to ensure safe navigation in complex environments. Two tasks are central to this capability: <strong>object detection</strong>, which identifies surrounding vehicles, pedestrians, and cyclists, and <strong>object tracking</strong>, which maintains their identities across frames to understand motion. If these components fail to work together, the vehicle may misjudge trajectories, perform abrupt maneuvers, or fail to avoid collisions.
+            Autonomous vehicles rely on precise perception to detect surrounding cars, pedestrians, and cyclists, and then track them across time to estimate motion. If detection and tracking pipelines fail to cooperate, the system may make incorrect trajectory predictions or perform unsafe maneuvers.
         </p>
 
         <p>
-            Although modern detectors like YOLO, RetinaNet, Faster R-CNN, and Mask R-CNN achieve high detection accuracy, their downstream impact on tracking is not well documented. Most prior studies evaluate detection and tracking separately, or benchmark trackers using only a single detector. As a result, the relationship between detector quality and tracking stability remains insufficiently analyzed.
+            While modern detectors achieve excellent accuracy on benchmarks, their downstream impact on multi-object tracking is rarely studied. Most research either evaluates detection or tracking independently, leaving a critical question unanswered:
         </p>
 
-        <p><strong>This project specifically addresses this gap by asking:</strong></p>
-        <h4 class="mt-3 text-info">“How does changing the detector affect multi-object tracking performance in autonomous driving scenarios?”</h4>
+        <h4 class="text-info mt-3">“How does the choice of detector affect tracking stability in real driving scenes?”</h4>
+    </div>
+
+    <hr class="container">
+
+    <!-- DATASET SECTION -->
+    <div class="container py-5">
+        <h2>Dataset Description</h2>
+
+        <h3 class="mt-4">KITTI Object Detection Dataset</h3>
+        <ul>
+            <li>Training images: <strong>5984</strong></li>
+            <li>Validation images: <strong>1497</strong></li>
+            <li>Classes: <strong>Car, Pedestrian, Cyclist</strong></li>
+            <li>Real-world driving scenes recorded in Karlsruhe, Germany</li>
+        </ul>
+
+        <img src="kitti_sample.png" class="img-fluid" alt="KITTI dataset sample placeholder">
+
+        <h3 class="mt-5">KITTI Tracking Dataset</h3>
+        <ul>
+            <li>21 training sequences, 29 test sequences</li>
+            <li>Frame-level annotations for multiple objects</li>
+            <li>Used for benchmarking multi-object tracking (MOT)</li>
+        </ul>
+        <img src="kitti_tracking_sample.png" class="img-fluid" alt="KITTI tracking sample placeholder">
     </div>
 
     <hr class="container">
@@ -109,21 +120,22 @@
 
         <h3 class="mt-4">Object Detection</h3>
         <ul>
-            <li><strong>YOLO family (v3 → v11):</strong> real-time one-stage detectors optimized for speed.</li>
-            <li><strong>RetinaNet:</strong> uses Focal Loss to address class imbalance.</li>
-            <li><strong>Faster R-CNN:</strong> two-stage, high-precision detector.</li>
-            <li><strong>Mask R-CNN:</strong> segmentation + detection for richer features.</li>
+            <li><strong>YOLO11</strong> — real-time, one-stage, high recall</li>
+            <li><strong>RetinaNet</strong> — Focal Loss for class imbalance</li>
+            <li><strong>Faster R-CNN</strong> — two-stage, high accuracy</li>
+            <li><strong>Mask R-CNN</strong> — segmentation + detection</li>
         </ul>
 
         <h3 class="mt-4">Object Tracking</h3>
         <ul>
-            <li><strong>DeepSORT:</strong> appearance features + Kalman filter, highly sensitive to FP/FN.</li>
-            <li><strong>ByteTrack:</strong> SOTA tracker that smartly handles low-score detections.</li>
+            <li><strong>DeepSORT:</strong> appearance embedding + Kalman filter, sensitive to FP/FN</li>
+            <li><strong>ByteTrack:</strong> high-performance tracker that smartly uses low-score detections</li>
         </ul>
 
-        <h3 class="mt-4">Gap in Literature</h3>
+        <h3 class="mt-4">Gap</h3>
         <p>
-            Few studies evaluate how <strong>different detectors</strong> influence <strong>tracking</strong>. Even fewer compare pretrained vs. fine-tuned versions across multiple architectures.
+            Prior work rarely analyzes how detector choice affects tracking.  
+            This project directly measures this relationship.
         </p>
     </div>
 
@@ -133,30 +145,53 @@
     <div class="container py-5">
         <h2>Approach & Method</h2>
 
-        <h3 class="mt-4 text-warning">Stage 1 — Detection Training on KITTI</h3>
+        <h3 class="mt-4 text-warning">Stage 1 — Detection Training</h3>
+        <p>Four models fine-tuned on KITTI:</p>
+        <ul>
+            <li>YOLO11</li>
+            <li>RetinaNet (R50-FPN)</li>
+            <li>Faster R-CNN</li>
+            <li>Mask R-CNN</li>
+        </ul>
+
+        <img src="detector_comparison.png" class="img-fluid" alt="Detector comparison placeholder">
+
+        <h3 class="mt-5 text-warning">Stage 2 — Detection on KITTI Tracking</h3>
         <p>
-            Dataset: KITTI Object Detection — 5984 train / 1497 val.  
-            Models fine-tuned: YOLO11, RetinaNet (R50-FPN), Faster R-CNN, Mask R-CNN.
+            Both pretrained and fine-tuned models were applied to tracking frames.  
+            Fine-tuned versions consistently improved mAP.
         </p>
 
+        <h3 class="mt-5 text-warning">Stage 3 — Multi-Object Tracking (DeepSORT + ByteTrack)</h3>
         <p>
-            Goal: Identify which detector provides the strongest foundation for tracking.
+            Trackers were evaluated on outputs from both pretrained and fine-tuned YOLO11.
         </p>
 
-        <h3 class="mt-4 text-warning">Stage 2 — Detection on KITTI Tracking Dataset</h3>
-        <p>
-            Both pretrained and fine-tuned models were evaluated.  
-            Fine-tuned versions consistently produced higher mAP.
-        </p>
+        <img src="pipeline.png" class="img-fluid" alt="Pipeline diagram placeholder">
+    </div>
 
-        <h3 class="mt-4 text-warning">Stage 3 — Multi-Object Tracking</h3>
-        <p>
-            Two trackers were used: DeepSORT and ByteTrack.  
-            Tracking stability improved significantly when using fine-tuned YOLO.
-        </p>
+    <hr class="container">
 
-        <h4 class="mt-4">Pipeline Diagram</h4>
-        <img src="pipeline.png" class="img-fluid" alt="Pipeline Diagram">
+    <!-- NEW: TRACKING RESULT VIDEOS -->
+    <div class="container py-5">
+        <h2>Tracking Demonstration Videos</h2>
+        <p class="text-secondary">These two videos clearly demonstrate how detection quality affects tracking stability.</p>
+
+        <div class="mt-4">
+            <h4 class="text-info">1️⃣ YOLO11 (Pretrained) + DeepSORT</h4>
+            <p>Weak detections → ID jumps, fragmentation, missed tracks.</p>
+            <video width="100%" controls>
+                <source src="tracking_pretrained.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="mt-5">
+            <h4 class="text-info">2️⃣ YOLO11 (Fine-Tuned) + DeepSORT</h4>
+            <p>Much smoother ID consistency, fewer switches, more stable trajectories.</p>
+            <video width="100%" controls>
+                <source src="tracking_finetuned.mp4" type="video/mp4">
+            </video>
+        </div>
     </div>
 
     <hr class="container">
@@ -164,16 +199,18 @@
     <!-- RESULTS -->
     <div class="container py-5">
         <h2>Experiments & Results</h2>
-        <p>
-            Fine-tuned YOLO achieved the best mAP and produced the most stable tracking trajectories.  
-            Pretrained models showed more ID switches, fragmentation, and missed detections.  
-        </p>
+        <p>Summary of key findings:</p>
 
-        <h4 class="mt-4">Example Visualizations</h4>
-        <img src="results.png" class="img-fluid" alt="Results">
+        <ul>
+            <li>YOLO11 fine-tuned achieves strongest mAP and fastest inference.</li>
+            <li>Two-stage models: lower recall, slower, moderate tracking performance.</li>
+            <li>Tracking improves significantly when using fine-tuned detections.</li>
+        </ul>
 
-        <h4 class="mt-5">Interactive 3D Viewer (Placeholder)</h4>
-        <iframe width="100%" height="400" src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" allowfullscreen></iframe>
+        <img src="results.png" class="img-fluid" alt="Results placeholder">
+
+        <h4 class="mt-5">Interactive 3D Viewer (Optional)</h4>
+        <iframe width="100%" height="400" src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"></iframe>
     </div>
 
     <hr class="container">
@@ -182,10 +219,9 @@
     <div class="container py-5">
         <h2>Discussion & Limitations</h2>
         <ul>
-            <li>Fine-tuned detectors reduce ID switches and improve tracking continuity.</li>
-            <li>DeepSORT is sensitive to detection noise; ByteTrack is more robust.</li>
-            <li>Only KITTI dataset was used; domain shift not evaluated.</li>
-            <li>Mask R-CNN was used only in bbox mode due to framework constraints.</li>
+            <li>Detection accuracy highly influences tracking robustness.</li>
+            <li>DeepSORT fragile to false positives; ByteTrack more stable.</li>
+            <li>Only KITTI dataset tested; domain shift not evaluated.</li>
         </ul>
     </div>
 
@@ -195,16 +231,11 @@
     <div class="container py-5">
         <h2>Conclusion</h2>
         <p>
-            This project provides a systematic analysis of how different object detection models influence multi-object tracking performance in autonomous driving. Fine-tuned YOLO11 achieved the strongest overall results, producing fewer ID switches and more stable trajectories. The study confirms that reliable tracking fundamentally depends on high-quality detections, offering insights for building robust perception pipelines in real-world applications.
+            This project demonstrates that higher-quality detectors significantly improve multi-object tracking stability in autonomous driving. Fine-tuned YOLO11 consistently produced fewer ID switches and smoother trajectories, validating the hypothesis that “good tracking requires good detection.” The findings provide practical insights for building more reliable perception pipelines in real-world autonomous driving systems.
         </p>
     </div>
 
-    <hr class="container">
-
-    <!-- FOOTER -->
-    <div class="footer">
-        © 2025 | Computer Vision Final Project
-    </div>
+    <div class="footer">© 2025 | Computer Vision Final Project</div>
 
 </body>
 </html>
