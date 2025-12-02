@@ -2,95 +2,161 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Final Project - Computer Vision</title>
+    <title>Object Detection & Tracking for Autonomous Driving</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap + FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
-        h1, h2, h3 { color: #003366; }
-        .section { margin-bottom: 40px; }
-        img { max-width: 100%; border-radius: 8px; }
-        .center { text-align: center; }
-        .button {
-            padding: 10px 20px;
-            background: #003366;
+        body {
+            background-color: #0d1117;
+            color: #e6edf3;
+            font-family: "Segoe UI", sans-serif;
+        }
+        .section {
+            padding: 80px 0;
+        }
+        h1, h2, h3 {
+            color: #58a6ff;
+        }
+        .hero {
+            padding: 100px 0;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+        .hero p {
+            font-size: 1.2rem;
+        }
+        a.btn-custom {
+            background-color: #238636;
+            border: none;
             color: white;
-            text-decoration: none;
-            border-radius: 6px;
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+        a.btn-custom:hover {
+            background-color: #2ea043;
+        }
+        img {
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: #8b949e;
+        }
+        iframe {
+            border-radius: 10px;
+            border: solid 1px #30363d;
         }
     </style>
 </head>
 
 <body>
 
-    <h1 class="center">Computer Vision Final Project</h1>
-    <h2 class="center">Project Title Goes Here</h2>
-    <p class="center">
-        <a class="button" href="poster.pdf">Download Poster</a>
-        <a class="button" href="https://github.com/YOUR_USERNAME/YOUR_REPO">GitHub Code</a>
-    </p>
+    <!-- HERO SECTION -->
+    <div class="hero container">
+        <h1>Object Detection & Tracking System in Autonomous Driving</h1>
+        <p class="mt-3">Final Project – Computer Vision</p>
+        <p class="mt-4">
+            <a href="poster.pdf" class="btn-custom me-2"><i class="fa-solid fa-file-pdf"></i> Download Poster</a>
+            <a href="https://github.com/YOUR_USERNAME/YOUR_REPO" class="btn-custom"><i class="fa-brands fa-github"></i> View Code</a>
+        </p>
+    </div>
 
-    <div class="section">
+    <hr class="container text-secondary">
+
+    <!-- ABSTRACT -->
+    <div class="section container">
         <h2>Abstract</h2>
         <p>
-            (Insert your 4–6 sentence abstract here.)
+            (Your abstract goes here. 4–6 sentences describing problem, gap, method, and results.)
         </p>
     </div>
 
-    <div class="section">
+    <!-- INTRODUCTION -->
+    <div class="section container">
         <h2>Introduction</h2>
         <p>
-            (Project background, motivation, research gap...)
+            (Introduce autonomous driving, object detection importance, tracking, challenges, research gap...)
         </p>
     </div>
 
-    <div class="section">
+    <!-- RELATED WORK -->
+    <div class="section container">
         <h2>Related Work</h2>
         <p>
-            (Prior methods, references, what has been studied before.)
+            (YOLO, SORT/DeepSORT, Kalman Filter, optical flow, KITTI dataset, tracking benchmarks, etc.)
         </p>
     </div>
 
-    <div class="section">
-        <h2>Approach / Method</h2>
+    <!-- APPROACH / PIPELINE -->
+    <div class="section container">
+        <h2>Approach & Method</h2>
         <p>
-            (Explain your pipeline, equations, algorithm choices...)
+            (Describe detection pipeline, tracking pipeline, architecture, algorithms, assumptions, challenges.)
         </p>
-        <img src="method.png" alt="Method Diagram">
+        <h4 class="mt-4">Pipeline Diagram</h4>
+        <img src="pipeline.png" class="img-fluid" alt="Pipeline Image Placeholder">
     </div>
 
-    <div class="section">
+    <!-- EXPERIMENTS -->
+    <div class="section container">
         <h2>Experiments & Results</h2>
         <p>
-            (Describe datasets, metrics, comparisons...)
+            (Describe datasets: KITTI, nuScenes, BDD100K... Evaluation metrics like MOTA, MOTP, FPS.)
         </p>
-        <img src="result.png" alt="Results">
+
+        <h4 class="mt-3">Example Visualizations</h4>
+        <img src="results.png" class="img-fluid" alt="Results image placeholder">
+
+        <h4 class="mt-5">Interactive 3D Viewer (Placeholder)</h4>
+        <p>You can embed your 3D bounding boxes or BEV map here.</p>
+        <iframe width="100%" height="400" src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" allowfullscreen></iframe>
     </div>
 
-    <div class="section">
+    <!-- DISCUSSION -->
+    <div class="section container">
         <h2>Discussion & Limitations</h2>
         <p>
-            (What worked well, what did not?)
+            (Tracking failures, occlusion, small objects, night scenes, motion blur, bounding box drift...)
         </p>
     </div>
 
-    <div class="section">
+    <!-- FUTURE WORK -->
+    <div class="section container">
         <h2>Future Work</h2>
         <p>
-            (Future improvements, next steps...)
+            (Improve with 3D tracking, transformer-based trackers, Lidar fusion, RAFT optical flow...)
         </p>
     </div>
 
-    <div class="section">
+    <!-- CONCLUSION -->
+    <div class="section container">
         <h2>Conclusion</h2>
         <p>
-            (Summary paragraph.)
+            (Summarize the contributions and key findings.)
         </p>
     </div>
 
-    <div class="section">
+    <!-- REFERENCES -->
+    <div class="section container">
         <h2>References</h2>
         <p>
-            (List of references.)
+            (List papers / datasets.)
         </p>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        © 2025 | Computer Vision Final Project
     </div>
 
 </body>
