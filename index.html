@@ -343,49 +343,84 @@
 
     <img src="images/tracking_compare.png" class="img-block mt-3">
 
-    <h3 class="subsection-title">Quantitative Metrics</h3>
-    <p>
-        We evaluated tracking outputs on KITTI using standard MOT metrics. Fine-tuned YOLO11 significantly 
-        improved tracking accuracy, reducing identity switches and false detections.
-    </p>
+   <h3 class="subsection-title">Quantitative Metrics</h3>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Setup</th>
-                <th>ID Switch</th>
-                <th>FP</th>
-                <th>FN</th>
-                <th>Recall</th>
-                <th>Precision</th>
-                <th>MOTA</th>
-                <th>IDF1</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>YOLO11 Pretrained + DeepSORT</td>
-                <td>176</td>
-                <td>6560</td>
-                <td>2081</td>
-                <td>0.4873</td>
-                <td>0.2317</td>
-                <td>-1.9099</td>
-                <td>0.314</td>
-            </tr>
+<p>
+    We evaluated the tracking performance on KITTI Sequence 0001 using standard Multi-Object Tracking (MOT) metrics.  
+    These metrics quantify how well the tracker maintains object identities, minimizes false detections, and recovers 
+    objects across frames. The results clearly show that <strong>fine-tuning the detector dramatically improves tracking performance</strong>.
+</p>
 
-            <tr>
-                <td>YOLO11 Fine-Tuned + DeepSORT</td>
-                <td>49</td>
-                <td>3206</td>
-                <td>1771</td>
-                <td>0.5438</td>
-                <td>0.3970</td>
-                <td>-0.6587</td>
-                <td>0.459</td>
-            </tr>
-        </tbody>
-    </table>
+<ul>
+    <li><strong>MOTA (Multiple Object Tracking Accuracy):</strong> penalizes False Positives (FP), False Negatives (FN), and ID switches.</li>
+    <li><strong>IDF1:</strong> measures how consistently object identities are preserved over time.</li>
+    <li><strong>ID Switches:</strong> lower values indicate better identity stability.</li>
+    <li><strong>FP / FN:</strong> false detections and missed detections.</li>
+    <li><strong>Precision / Recall:</strong> overall detection quality during tracking.</li>
+</ul>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Setup</th>
+            <th>ID Switch</th>
+            <th>FP</th>
+            <th>FN</th>
+            <th>Recall</th>
+            <th>Precision</th>
+            <th>MOTA</th>
+            <th>IDF1</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>YOLO11 Pretrained + DeepSORT</td>
+            <td>176</td>
+            <td>6560</td>
+            <td>2081</td>
+            <td>0.4873</td>
+            <td>0.2317</td>
+            <td>-1.9099</td>
+            <td>0.314</td>
+        </tr>
+
+        <tr>
+            <td>YOLO11 Fine-Tuned + DeepSORT</td>
+            <td>49</td>
+            <td>3206</td>
+            <td>1771</td>
+            <td>0.5438</td>
+            <td>0.3970</td>
+            <td>-0.6587</td>
+            <td>0.459</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    The fine-tuned YOLO11 model provides a much cleaner input to the tracker:
+</p>
+
+<ul>
+    <li><strong>ID switches dropped from 176 → 49</strong> (a 72% improvement), meaning identities remain stable.</li>
+    <li><strong>False Positives reduced by 51%</strong> (6560 → 3206), avoiding phantom detections.</li>
+    <li><strong>False Negatives reduced</strong> (2081 → 1771), so fewer objects are missed.</li>
+    <li><strong>Precision improved from 0.23 → 0.40</strong>, meaning detections are more reliable.</li>
+    <li><strong>Recall improved from 0.49 → 0.54</strong>, indicating more objects are successfully tracked.</li>
+    <li><strong>IDF1 improved from 0.314 → 0.459</strong>, showing stronger identity consistency.</li>
+</ul>
+
+<p>
+    Although MOTA remains negative (common on KITTI when FP is high), the improvement from <strong>-1.91 to -0.65</strong>
+    indicates that the tracker benefits substantially from the cleaner detections of the fine-tuned model.
+</p>
+
+<p>
+    Overall, these results confirm that <strong>detection quality is the dominant factor in multi-object tracking</strong>.  
+    Fine-tuned YOLO11 produces more accurate bounding boxes and fewer noisy detections, resulting in significantly 
+    more stable and reliable tracking performance.
+</p>
+
 
     <p>
         Fine-tuning the detector reduced ID switches by <strong>~72%</strong> and significantly improved precision and IDF1, 
