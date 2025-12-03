@@ -435,14 +435,44 @@
 </section>
 
 <!-- CONCLUSION -->
+<!-- CONCLUSION -->
 <section id="conclusion">
     <h2 class="section-title">Conclusion</h2>
+
     <p>
-        Fine-tuned detection models significantly improve multi-object tracking quality in autonomous driving data.
-        YOLO11 achieved the best overall performance, and when used with DeepSORT, it reduced ID switching and improved
-        track continuity. The results confirm that high-quality detections directly lead to better tracking stability.
+        This project demonstrates that high-quality object detection is the most important factor affecting the 
+        performance of multi-object tracking in autonomous driving. Four detection architectures—YOLO11, RetinaNet, 
+        Faster R-CNN, and Mask R-CNN—were trained and tested on the KITTI dataset. While all models showed clear 
+        improvements after fine-tuning, YOLO11 consistently delivered the strongest performance and the most stable 
+        detections.
     </p>
+
+    <p>
+        When integrated into a tracking framework such as DeepSORT, the benefit of fine-tuning became even more 
+        apparent. The fine-tuned YOLO11 model reduced ID switches by over <strong>70%</strong>, cut false positives by 
+        half, and significantly increased precision, recall, and IDF1. These improvements show that the tracker 
+        becomes more reliable simply because the detections it receives are cleaner, more accurate, and more 
+        consistent over time.
+    </p>
+
+    <p>
+        The results also highlight an important insight for real-world autonomous driving: 
+        <strong>tracking cannot compensate for poor detections.</strong> Even advanced trackers like DeepSORT or 
+        ByteTrack rely heavily on the bounding box quality, object confidence, and temporal consistency produced 
+        by the detector. When the detector fails—missing objects, producing noisy boxes, or fluctuating 
+        confidence—the tracker also becomes unstable.
+    </p>
+
+    <p>
+        Overall, this study confirms that fine-tuning detection models on domain-specific datasets like KITTI 
+        is essential for high-performance tracking. In safety-critical applications such as autonomous vehicles, 
+        better detectors directly translate to more reliable perception, smoother object trajectories, and 
+        reduced identity fragmentation.
+    </p>
+
+
 </section>
+
 
 <!-- REFERENCES -->
 <section id="references">
