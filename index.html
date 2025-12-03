@@ -24,7 +24,7 @@
 <!-- HERO -->
 <header class="bg-dark text-white text-center py-5">
     <h1 class="display-4 fw-bold">Object Detection & Tracking System in Autonomous Driving</h1>
-    <p class="lead">A Comparative Study of YOLO, RetinaNet, Faster R-CNN, Mask R-CNN + DeepSORT / ByteTrack</p>
+    <p class="lead">A Comparative Study of YOLO, RetinaNet, Faster R-CNN, Mask R-CNN + DeepSORT </p>
 </header>
 
 <div class="container py-4">
@@ -36,7 +36,7 @@
         This project investigates object detection and tracking performance in autonomous driving scenarios.
         Four detection models (YOLO11, RetinaNet, Faster R-CNN, Mask R-CNN) were fine-tuned on the KITTI object
         detection dataset and evaluated both on the KITTI detection and KITTI tracking dataset. Two tracking
-        algorithms, DeepSORT and ByteTrack, were used to analyze how detection accuracy affects multi-object tracking
+        algorithms, DeepSORT, were used to analyze how detection accuracy affects multi-object tracking
         stability. Experimental results show that fine-tuned detectors significantly reduce ID switching and tracking
         fragmentation compared to pretrained models, confirming the strong coupling between detection quality and
         overall tracking performance.
@@ -57,6 +57,20 @@
 <!-- DATASET -->
 <section id="dataset">
     <h2 class="section-title">Dataset</h2>
+    <h4 class="subsection-title">Why KITTI?</h4>
+    <p>
+      The <strong>KITTI Vision Benchmark Suite</strong> provides synchronized multi-sensor data from real driving scenarios: stereo RGB cameras, a 64-beam LiDAR scanner, and GPS/IMU for vehicle localization.  
+      This rich sensor setup allows tasks beyond 2D detection — such as 3D object detection, depth estimation, odometry, and even sensor fusion studies. <br>
+      The dataset is widely adopted in autonomous driving research, ensuring that results are comparable to the literature.
+    </p>
+
+    <h4 class="subsection-title">Dataset Structure & Contents</h4>
+    <ul>
+      <li><strong>Object Detection Benchmark:</strong> ~7481 training + ~7518 test images, annotated in 2D bounding-boxes + 3D box metadata. Class labels include Cars, Pedestrians, Cyclists, Trucks, Vans, Trams, etc.</li>
+      <li><strong>Object Tracking Benchmark:</strong> 21 annotated sequences for training, 29 for testing. Ground-truth includes object track IDs, occlusion / truncation metadata, and 2D bounding boxes for each frame.</li>
+      <li>Only “Car” and “Pedestrian” categories are evaluated in the official tracking benchmark to ensure sufficient data per class.</li>
+      <li>Annotation format provides detailed information: occlusion level, truncation ratio, visibility, 3D position & size — enabling tasks beyond simple 2D detection.</li>
+    </ul>
 
     <h4 class="subsection-title">KITTI Detection Dataset</h4>
     <ul>
