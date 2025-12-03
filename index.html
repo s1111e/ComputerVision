@@ -265,27 +265,71 @@
         <div class="col-md-3"><img src="images/mrcnn_detection.png" class="img-block"></div>
     </div>
 </section>
-
 <!-- TRACKING PIPELINE -->
 <section id="tracking">
     <h2 class="section-title">Tracking Pipeline</h2>
 
     <img src="images/tracking_flowchart.svg" class="flowchart" alt="Tracking Flowchart">
 
-    <h4 class="subsection-title">Tracker Overview</h4>
+    <h4 class="subsection-title">Overview</h4>
     <p>
-        Two state-of-the-art multi-object tracking algorithms were used:
+        After evaluating four object detection models on KITTI Tracking, we selected two versions of YOLO11 
+        (pretrained and fine-tuned) for multi-object tracking experiments. The goal was to analyze how detection
+        quality influences the performance of a tracking algorithm in real driving scenes.
     </p>
+
+    <h4 class="subsection-title">Why Multi-Object Tracking?</h4>
+    <p>
+        Autonomous vehicles must track the same object across consecutive frames. While object detection identifies 
+        objects independently per image, tracking links detections over time to maintain consistent object identities.
+        Tracking performance is highly sensitive to detection quality—poor detections lead to identity switches,
+        false positives, and unstable trajectories.
+    </p>
+
+    <h4 class="subsection-title">Tracking Algorithm: DeepSORT</h4>
+    <p>
+        We employed <strong>DeepSORT</strong>, a widely used and reliable MOT algorithm. DeepSORT extends SORT by 
+        adding appearance-based re-identification (ReID), making it more robust in crowded or occluded environments.
+    </p>
+
     <ul>
-        <li><strong>DeepSORT</strong>: Appearance-based tracking using ReID + Kalman filter + Hungarian matching</li>
+        <li><strong>Appearance Embeddings (ReID):</strong> Each detected object is converted to a feature vector for identity matching.</li>
+        <li><strong>Kalman Filter:</strong> Predicts object motion across frames even when detections are missing.</li>
+        <li><strong>Hungarian Algorithm:</strong> Matches predictions with detections via IoU + appearance similarity.</li>
+        <li><strong>ID Assignment:</strong> Maintains consistent ID numbers over time.</li>
     </ul>
+
+    <p>
+        DeepSORT is a strong baseline for autonomous driving systems due to its speed, simplicity, and reliable 
+        identity preservation—especially important for safety-critical tasks.
+    </p>
+
+    <h4 class="subsection-title">Experiment Setup</h4>
+    <p>
+        We tested the tracker on KITTI Tracking Sequence <strong>0001</strong>, once using:
+    </p>
+
+    <ul>
+        <li><strong>YOLO11 Pretrained</strong> detections</li>
+        <li><strong>YOLO11 Fine-Tuned</strong> detections</li>
+    </ul>
+
+    <p>
+        This allowed a controlled comparison of how fine-tuning detector models directly affects tracking behavior:
+        fewer false detections → more accurate trajectories → reduced ID switches.
+    </p>
 </section>
+
 
 <!-- TRACKING RESULTS -->
 <section id="tracking-results">
     <h2 class="section-title">Tracking Results</h2>
 
-    <h3 class="subsection-title">Qualitative Comparison</h3>
+    <h3 class="subsection-title">Qualitative Comparison (Sequence 0001)</h3>
+    <p>
+        Below are the tracking visualization videos generated from KITTI 0001. The improvement after fine-tuning 
+        is clearly visible—IDs remain stable, tracks do not jump, and the tracker loses fewer objects.
+    </p>
 
     <h5>YOLO11 (Pretrained) + DeepSORT</h5>
     <video class="video-block" controls>
@@ -299,25 +343,54 @@
 
     <img src="images/tracking_compare.png" class="img-block mt-3">
 
-    <h3 class="subsection-title">Tracking Metrics</h3>
+    <h3 class="subsection-title">Quantitative Metrics</h3>
+    <p>
+        We evaluated tracking outputs on KITTI using standard MOT metrics. Fine-tuned YOLO11 significantly 
+        improved tracking accuracy, reducing identity switches and false detections.
+    </p>
 
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Setup</th>
                 <th>ID Switch</th>
-                <th>Fragmentation</th>
                 <th>FP</th>
                 <th>FN</th>
                 <th>Recall</th>
                 <th>Precision</th>
+                <th>MOTA</th>
+                <th>IDF1</th>
             </tr>
         </thead>
         <tbody>
-            <tr><td>YOLO Pretrained + DeepSORT</td><td colspan="6">Pending...</td></tr>
-            <tr><td>YOLO Fine-Tuned + DeepSORT</td><td colspan="6">Pending...</td></tr>
+            <tr>
+                <td>YOLO11 Pretrained + DeepSORT</td>
+                <td>176</td>
+                <td>6560</td>
+                <td>2081</td>
+                <td>0.4873</td>
+                <td>0.2317</td>
+                <td>-1.9099</td>
+                <td>0.314</td>
+            </tr>
+
+            <tr>
+                <td>YOLO11 Fine-Tuned + DeepSORT</td>
+                <td>49</td>
+                <td>3206</td>
+                <td>1771</td>
+                <td>0.5438</td>
+                <td>0.3970</td>
+                <td>-0.6587</td>
+                <td>0.459</td>
+            </tr>
         </tbody>
     </table>
+
+    <p>
+        Fine-tuning the detector reduced ID switches by <strong>~72%</strong> and significantly improved precision and IDF1, 
+        showing that stronger detections directly improve tracking stability.
+    </p>
 </section>
 
 <!-- CONCLUSION -->
