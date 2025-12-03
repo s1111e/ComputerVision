@@ -96,14 +96,120 @@
 <section id="models">
     <h2 class="section-title">Object Detection Models</h2>
 
-    <div class="row text-center">
-        <div class="col-md-3"><img src="images/yolo_arch.png" class="img-block" alt="YOLO"></div>
-        <div class="col-md-3"><img src="images/retina_arch.png" class="img-block" alt="RetinaNet"></div>
-        <div class="col-md-3"><img src="images/frcnn_arch.png" class="img-block" alt="FRCNN"></div>
-        <div class="col-md-3"><img src="images/mrcnn_arch.png" class="img-block" alt="Mask R-CNN"></div>
+    <p>
+        Modern autonomous driving systems require fast and accurate object detectors capable of identifying multiple
+        classes across varying lighting, occlusion, and traffic conditions. In this project, we compare four
+        state-of-the-art detection algorithms that represent both <strong>one-stage</strong> and <strong>two-stage</strong>
+        detection paradigms. This selection allows us to analyze differences in accuracy, speed, complexity, and their
+        impact on downstream tracking algorithms such as DeepSORT and ByteTrack.
+    </p>
+
+    <!-- MODEL IMAGES -->
+    <div class="row text-center my-4">
+        <div class="col-md-3">
+            <img src="images/yolo_arch.png" class="img-block" alt="YOLO">
+            <h5 class="mt-2">YOLO11 (One-Stage)</h5>
+        </div>
+        <div class="col-md-3">
+            <img src="images/retina_arch.png" class="img-block" alt="RetinaNet">
+            <h5 class="mt-2">RetinaNet (One-Stage)</h5>
+        </div>
+        <div class="col-md-3">
+            <img src="images/frcnn_arch.png" class="img-block" alt="FRCNN">
+            <h5 class="mt-2">Faster R-CNN (Two-Stage)</h5>
+        </div>
+        <div class="col-md-3">
+            <img src="images/mrcnn_arch.png" class="img-block" alt="Mask R-CNN">
+            <h5 class="mt-2">Mask R-CNN (Two-Stage)</h5>
+        </div>
     </div>
 
-    <h3 class="subsection-title">Training Loss Curves</h3>
+
+    <!-- MODEL DESCRIPTIONS -->
+    <h3 class="subsection-title">Model Descriptions & Motivation</h3>
+
+    <h4 class="mt-4">1. YOLO11 (One-Stage Detector)</h4>
+    <p>
+        YOLO (“You Only Look Once”) is a real-time object detector that processes the entire image in a single forward pass. 
+        YOLO11 represents the latest generation of this architecture, offering improved feature fusion, optimized anchor-free heads,
+        and high-speed inference ideal for real-time autonomous driving.
+        <br><strong>Why included?</strong> It provides the best speed–accuracy trade-off and is widely used in tracking pipelines.
+    </p>
+
+    <h4 class="mt-4">2. RetinaNet (One-Stage Detector)</h4>
+    <p>
+        RetinaNet introduced the <strong>Focal Loss</strong>, solving the class imbalance problem common in autonomous driving scenes 
+        (many cars, few pedestrians/cyclists). It uses a Feature Pyramid Network (FPN) to detect small and medium objects more reliably.
+        <br><strong>Why included?</strong> Represents earlier SOTA single-stage detectors and provides a strong baseline against YOLO.
+    </p>
+
+    <h4 class="mt-4">3. Faster R-CNN (Two-Stage Detector)</h4>
+    <p>
+        Faster R-CNN is a classic high-accuracy detector that uses a <strong>Region Proposal Network (RPN)</strong> to generate regions 
+        before classification. It is slower but significantly more stable in complex scenes.
+        <br><strong>Why included?</strong> Serves as a two-stage accuracy-focused baseline for comparison with one-stage methods.
+    </p>
+
+    <h4 class="mt-4">4. Mask R-CNN (Two-Stage Detector)</h4>
+    <p>
+        Mask R-CNN extends Faster R-CNN by adding an <strong>instance segmentation branch</strong>, improving spatial precision at 
+        object boundaries. Even though this project uses only bounding boxes, the shared backbone provides strong feature representations.
+        <br><strong>Why included?</strong> Represents more advanced two-stage models with higher modeling capacity.
+    </p>
+
+
+    <!-- COMPARISON TABLE -->
+    <h3 class="subsection-title mt-5">Model Comparison Summary</h3>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Model</th>
+                <th>Type</th>
+                <th>Speed</th>
+                <th>Accuracy</th>
+                <th>Strengths</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>YOLO11</td>
+                <td>One-Stage</td>
+                <td>⭐⭐⭐⭐⭐</td>
+                <td>⭐⭐⭐⭐</td>
+                <td>Real-time, most stable for tracking</td>
+            </tr>
+            <tr>
+                <td>RetinaNet</td>
+                <td>One-Stage</td>
+                <td>⭐⭐⭐</td>
+                <td>⭐⭐⭐</td>
+                <td>Focal Loss improves minority classes</td>
+            </tr>
+            <tr>
+                <td>Faster R-CNN</td>
+                <td>Two-Stage</td>
+                <td>⭐⭐</td>
+                <td>⭐⭐⭐⭐⭐</td>
+                <td>Highly accurate proposals</td>
+            </tr>
+            <tr>
+                <td>Mask R-CNN</td>
+                <td>Two-Stage</td>
+                <td>⭐</td>
+                <td>⭐⭐⭐⭐⭐</td>
+                <td>Best for occlusion & boundary precision</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <!-- LOSS CURVES -->
+    <h3 class="subsection-title mt-5">Training Loss Curves</h3>
+    <p>
+        Loss curves demonstrate whether each model converged properly during fine-tuning on the KITTI detection dataset.
+        Models with steadily decreasing loss show stable learning and good generalization to validation data.
+    </p>
+
     <div class="row text-center">
         <div class="col-md-3"><img src="images/yolo_loss.png" class="img-block"></div>
         <div class="col-md-3"><img src="images/retina_loss.png" class="img-block"></div>
@@ -111,6 +217,7 @@
         <div class="col-md-3"><img src="images/mrcnn_loss.png" class="img-block"></div>
     </div>
 </section>
+
 
 <!-- DETECTION RESULTS -->
 <section id="detection-results">
